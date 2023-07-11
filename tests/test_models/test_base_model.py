@@ -34,6 +34,9 @@ class TestBaseModel(unittest.TestCase):
             class_name, self.base_model.id, self.base_model.__dict__)
         self.assertEqual(str(self.base_model), expected_output)
 
+    def test_type_classBaseModal(self):
+        self.assertEqual(BaseModel, type(BaseModel()))
+        
 
 
 if __name__ == '__main__':
