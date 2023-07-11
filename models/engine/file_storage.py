@@ -3,9 +3,11 @@
 import os
 import json
 
+
 class FileStorage:
     """
-    FileStorage class that manages the storage and retrieval of objects in a JSON file.
+    FileStorage class that manages the storage
+    and retrieval of objects in a JSON file.
     """
 
     __file_path = "file.json"
@@ -44,7 +46,8 @@ class FileStorage:
         try:
             with open(self.__file_path, "r") as file:
                 data = json.load(file)
-                self.__objects = {key: self.__create_instance(key, value) for key, value in data.items()}
+                self.__objects = {key: self.__create_instance(
+                    key, value) for key, value in data.items()}
         except FileNotFoundError:
             pass
 
@@ -56,13 +59,15 @@ class FileStorage:
             with open(self.__file_path, "r") as file:
                 try:
                     data = json.load(file)
-                    self.__objects = {key: self.__create_instance(key, value) for key, value in data.items()}
+                    self.__objects = {key: self.__create_instance(
+                        key, value) for key, value in data.items()}
                 except json.JSONDecodeError:
                     pass
 
     def __create_instance(self, key, value):
         """
-        Creates an instance of a class based on the provided key and attribute values.
+        Creates an instance of a class based on the provided
+        key and attribute values.
 
         Args:
             key: Key representing the class name and object ID.
