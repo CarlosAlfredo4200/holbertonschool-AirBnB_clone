@@ -28,16 +28,17 @@ class TestBaseModel(unittest.TestCase):
     def test_created_at_is_datetime(self):
         self.assertIsInstance(self.base_model.created_at, datetime)
 
-@patch('builtins.print')
-def test_str_prints_correct_string(self, mock_print):
-    expected_output = f"[BaseModel] ({self.base_model.id}) {self.base_model.__dict__}"
-    print("Expected output:", expected_output)  # Punto de depuración
-    self.base_model.__str__()
-    mock_print.assert_called_once_with(expected_output)
+    def test_str(self):
+        class_name = self.base_model.__class__.__name__
+        expected_output = "[{}] ({}) {}".format(
+            class_name, self.base_model.id, self.base_model.__dict__)
+        self.assertEqual(str(self.base_model), expected_output)
+
 
 
 if __name__ == '__main__':
     unittest.main()
+
 
 
 
