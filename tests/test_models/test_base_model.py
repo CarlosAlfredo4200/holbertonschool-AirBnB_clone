@@ -3,6 +3,7 @@ from datetime import datetime
 from unittest.mock import patch
 from models.base_model import BaseModel
 
+
 class TestBaseModel(unittest.TestCase):
     def setUp(self):
         self.base_model = BaseModel()
@@ -36,12 +37,7 @@ class TestBaseModel(unittest.TestCase):
 
     def test_type_classBaseModal(self):
         self.assertEqual(BaseModel, type(BaseModel()))
-        
 
 
 if __name__ == '__main__':
     unittest.main()
-
-
-
-
