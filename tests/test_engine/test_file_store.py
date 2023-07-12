@@ -16,12 +16,8 @@ class TestFileStorage(unittest.TestCase):
         if os.path.exists(self.file_path):
             os.remove(self.file_path)
 
-    
     def test_file_path_default_value(self):
         self.assertEqual(self.storage._FileStorage__file_path, "file.json")
-
-    # def test_objects_default_value(self):
-    #      self.assertEqual(self.storage._FileStorage__objects, {})
 
     def test_all_returns_dictionary_of_objects(self):
         self.storage.new(self.base_model)
@@ -37,25 +33,8 @@ class TestFileStorage(unittest.TestCase):
             str(self.base_model)
         )
 
-    # def test_save_creates_file_with_correct_data(self):
-    #     self.storage.new(self.base_model)
-    #     self.storage.save()
-    #     with open(self.file_path, "r") as file:
-    #         data = json.load(file)
-    #         expected_data = {
-    #             f"BaseModel.{self.base_model.id}": self.base_model.to_dict()
-    #         }
-    #         self.assertEqual(data, expected_data)
-
-    # def test_reload_loads_data_from_file(self):
-    #     self.storage.new(self.base_model)
-    #     self.storage.save()
-    #     self.storage.new(BaseModel())
-    #     self.storage.reload()
-    #     self.assertEqual(
-    #         self.storage._FileStorage__objects,
-    #         {f"BaseModel.{self.base_model.id}": self.base_model}
-    #     )
+    def test_file_path_has_correct_length(self):
+        self.assertEqual(len(self.storage._FileStorage__file_path), 9)
 
 class TestBaseModel(unittest.TestCase):
     def test_init_assigns_unique_id_and_datetimes(self):
@@ -102,16 +81,16 @@ class TestBaseModel(unittest.TestCase):
     def test_all_with_arg(self):
         with self.assertRaises(TypeError):
             models.storage.all(None)
-            
+
     @classmethod
-    def setUp(self):
+    def setUp(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
             pass
 
     @classmethod
-    def tearDown(self):
+    def tearDown(cls):
         try:
             os.remove("file.json")
         except IOError:
@@ -121,6 +100,6 @@ class TestBaseModel(unittest.TestCase):
         except IOError:
             pass
         FileStorage._FileStorage__objects = {}
-        
+
 if __name__ == '__main__':
     unittest.main()
