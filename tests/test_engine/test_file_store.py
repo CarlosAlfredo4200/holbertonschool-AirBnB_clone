@@ -18,6 +18,12 @@ class TestFileStorage(unittest.TestCase):
 
     def test_file_path_default_value(self):
         self.assertEqual(self.storage._FileStorage__file_path, "file.json")
+        
+    def test_file_path(self):
+        """
+        Test that __file_path attribute is set correctly.
+        """
+        self.assertEqual(self.storage._FileStorage__file_path, "file.json")
 
     def test_all_returns_dictionary_of_objects(self):
         self.storage.new(self.base_model)
