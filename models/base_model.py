@@ -36,6 +36,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.today()
             self.updated_at = datetime.today()
+            storage.new(self)
 
     def __str__(self):
         """
@@ -44,7 +45,7 @@ class BaseModel:
         Returns:
             str: A string representation in the format:
                  "[<class name>] (<id>) <attribute dictionary>"
-                 """
+        """
         return f"[{type(self).__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
@@ -53,6 +54,7 @@ class BaseModel:
 
         """
         self.updated_at = datetime.today()
+        from models import storage
         storage.save()
 
     def to_dict(self):

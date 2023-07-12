@@ -2,6 +2,7 @@
 
 import os
 import json
+from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -17,26 +18,18 @@ class FileStorage:
         """
         Returns the dictionary of stored objects.
         """
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
-        """
-        Adds a new object to the dictionary of stored objects.
-
-        Args:
-            obj: Object to be stored.
-        """
-        obj_class_name = obj.__class__.__name__
-        key = f"{obj_class_name}.{obj.id}"
-        self.__objects[key] = obj
+        """Set in __objects obj with key <obj_class_name>.id"""
+        newObjName = obj.__class__.__name__
+        self.__objects["{}.{}".format(newObjName, obj.id)] = obj
 
     def save(self):
-        """
-        Saves the dictionary of objects to a JSON file.
-        """
-        data = {key: obj.__dict__ for key, obj in self.__objects.items()}
+        """Serialize __objects to the JSON file __file_path."""
+        obj_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
         with open(self.__file_path, "w") as file:
-            json.dump(data, file)
+            json.dump(obj_dict, file)
 
     def load(self):
         """
@@ -66,16 +59,20 @@ class FileStorage:
 
     def __create_instance(self, key, value):
         """
-        Creates an instance of a class based on the provided
-        key and attribute values.
+        Creates an instance of a class based on the key and value.
 
         Args:
-            key: Key representing the class name and object ID.
-            value: Dictionary of attribute values for the object.
+            key (str): Key representing the class name and object id.
+            value (dict): Dictionary containing the attributes of the object.
 
         Returns:
-            An instance of the class with the provided attribute values.
+            instance: An instance of the class represented by the key.
+
         """
         class_name, obj_id = key.split('.')
-        class_ = getattr(models, class_name)
-        return class_(**value)
+        class_dict = {"BaseModel": BaseModel}
+        if class_name in class_dict:
+            return class_dict[class_name](**value)
+        else:
+            return None
+
