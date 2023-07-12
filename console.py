@@ -94,7 +94,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        print([str(value) for key, value in instances.items() if key.startswith(args[0])])
+        print([str(value)
+              for key, value in instances.items() if key.startswith(args[0])])
 
     def do_update(self, arg):
         """Update an instance based on the class name and id"""
@@ -134,11 +135,8 @@ class HBNBCommand(cmd.Cmd):
         except ValueError:
             pass
 
-        if attribute in instance.__dict__:
-            setattr(instance, attribute, value)
-            instance.save()
-        else:
-            print("** attribute doesn't exist **")
+        instance.__dict__[attribute] = value
+        instance.save()
 
     def do_help(self, arg):
         """Display help messages"""
