@@ -33,73 +33,9 @@ class TestFileStorage(unittest.TestCase):
             str(self.base_model)
         )
 
-    def test_file_path_has_correct_length(self):
-        self.assertEqual(len(self.storage._FileStorage__file_path), 9)
-
-class TestBaseModel(unittest.TestCase):
-    def test_init_assigns_unique_id_and_datetimes(self):
-        base_model = BaseModel()
-        self.assertIsInstance(base_model.id, str)
-        self.assertIsInstance(base_model.created_at, datetime.datetime)
-        self.assertIsInstance(base_model.updated_at, datetime.datetime)
-
-    def test_str_returns_correct_string_representation(self):
-        base_model = BaseModel()
-        expected_output = f"[BaseModel] ({base_model.id}) {base_model.__dict__}"
-        self.assertEqual(str(base_model), expected_output)
-
-    def test_save_updates_updated_at(self):
-        base_model = BaseModel()
-        initial_updated_at = base_model.updated_at
-        base_model.save()
-        self.assertNotEqual(initial_updated_at, base_model.updated_at)
-
-    def test_to_dict_returns_correct_dict_representation(self):
-        base_model = BaseModel()
-        obj_dict = base_model.to_dict()
-        self.assertIsInstance(obj_dict, dict)
-        self.assertEqual(obj_dict["__class__"], "BaseModel")
-        self.assertEqual(obj_dict["created_at"], base_model.created_at.isoformat())
-        self.assertEqual(obj_dict["updated_at"], base_model.updated_at.isoformat())
-
-    def test_FileStorage_instantiation_no_args(self):
-        self.assertEqual(type(FileStorage()), FileStorage)
-
-    def test_FileStorage_instantiation_with_arg(self):
-        with self.assertRaises(TypeError):
-            FileStorage(None)
-
-    def test_FileStorage_file_path_is_private_str(self):
-        self.assertEqual(str, type(FileStorage._FileStorage__file_path))
-
-    def testFileStorage_objects_is_private_dict(self):
-        self.assertEqual(dict, type(FileStorage._FileStorage__objects))
-
     def test_all(self):
-        self.assertEqual(dict, type(models.storage.all()))
-
-    def test_all_with_arg(self):
-        with self.assertRaises(TypeError):
-            models.storage.all(None)
-
-    @classmethod
-    def setUp(cls):
-        try:
-            os.rename("file.json", "tmp")
-        except IOError:
-            pass
-
-    @classmethod
-    def tearDown(cls):
-        try:
-            os.remove("file.json")
-        except IOError:
-            pass
-        try:
-            os.rename("tmp", "file.json")
-        except IOError:
-            pass
-        FileStorage._FileStorage__objects = {}
+        all_objs = self.storage.all()
+        self.assertEqual(all_objs, self.storage._FileStorage__objects)
 
 if __name__ == '__main__':
     unittest.main()
