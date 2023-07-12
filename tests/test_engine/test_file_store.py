@@ -5,6 +5,9 @@ import json
 import models
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+from models.user import User
+ 
+
 
 class TestFileStorage(unittest.TestCase):
     def setUp(self):
@@ -18,7 +21,7 @@ class TestFileStorage(unittest.TestCase):
 
     def test_file_path_default_value(self):
         self.assertEqual(self.storage._FileStorage__file_path, "file.json")
-        
+
     def test_file_path(self):
         """
         Test that __file_path attribute is set correctly.
@@ -28,7 +31,8 @@ class TestFileStorage(unittest.TestCase):
     def test_all_returns_dictionary_of_objects(self):
         self.storage.new(self.base_model)
         objects = self.storage.all()
-        self.assertEqual(objects, {f"BaseModel.{self.base_model.id}": self.base_model})
+        self.assertEqual(
+            objects, {f"BaseModel.{self.base_model.id}": self.base_model})
 
     def test_new_adds_object_to_objects_dictionary(self):
         self.storage.new(self.base_model)
@@ -43,5 +47,18 @@ class TestFileStorage(unittest.TestCase):
         all_objs = self.storage.all()
         self.assertEqual(all_objs, self.storage._FileStorage__objects)
 
+    def test_new(self):
+        bm = BaseModel()
+        us = User()
+         
+        models.storage.new(bm)
+        models.storage.new(us)
+         
+        self.assertIn("BaseModel." + bm.id, models.storage.all().keys())
+        self.assertIn(bm, models.storage.all().values())
+        self.assertIn("User." + us.id, models.storage.all().keys())
+        self.assertIn(us, models.storage.all().values())
+         
+    
 if __name__ == '__main__':
     unittest.main()
