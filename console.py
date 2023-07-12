@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+"""a program called console.py"""
+
 import cmd
 
 
