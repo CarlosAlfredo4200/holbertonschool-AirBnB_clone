@@ -75,4 +75,3 @@ class FileStorage:
             return class_dict[class_name](**value)
         else:
             return None
-

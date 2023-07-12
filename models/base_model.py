@@ -2,7 +2,7 @@
 """a class BaseModel"""
 import uuid
 from datetime import datetime
-from models import storage
+
 
 
 class BaseModel:
@@ -36,6 +36,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.today()
             self.updated_at = datetime.today()
+            from models import storage
             storage.new(self)
 
     def __str__(self):
