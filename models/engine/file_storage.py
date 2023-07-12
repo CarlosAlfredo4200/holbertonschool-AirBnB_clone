@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 """Create class file storage"""
 
+#!/usr/bin/python3
+"""Create class file storage"""
+
 import os
 import json
 from models.base_model import BaseModel
