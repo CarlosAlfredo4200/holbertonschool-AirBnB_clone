@@ -2,6 +2,7 @@ import datetime
 import unittest
 import os
 import json
+import models
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 
@@ -95,7 +96,12 @@ class TestBaseModel(unittest.TestCase):
     def testFileStorage_objects_is_private_dict(self):
         self.assertEqual(dict, type(FileStorage._FileStorage__objects))
 
-     
+    def test_all(self):
+        self.assertEqual(dict, type(models.storage.all()))
+
+    def test_all_with_arg(self):
+        with self.assertRaises(TypeError):
+            models.storage.all(None)
         
 if __name__ == '__main__':
     unittest.main()
