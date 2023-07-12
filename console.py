@@ -4,12 +4,13 @@
 import cmd
 import json
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
-    classes = {'BaseModel': BaseModel}
+    classes = {'BaseModel': BaseModel, 'User': User}
 
     def do_quit(self, arg):
         """Quit command to exit the program"""
@@ -24,15 +25,17 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """Create a new instance of BaseModel"""
+        """Create a new instance of a given class"""
         if not arg:
             print("** class name missing **")
             return
-        elif arg not in self.classes:
+
+        class_name = arg.split()[0]
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
 
-        instance = self.classes[arg]()
+        instance = self.classes[class_name]()
         instance.save()
         print(instance.id)
 
@@ -94,8 +97,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        print([str(value)
-              for key, value in instances.items() if key.startswith(args[0])])
+        print([str(value) for key, value in instances.items() if key.startswith(args[0])])
 
     def do_update(self, arg):
         """Update an instance based on the class name and id"""
@@ -143,7 +145,7 @@ class HBNBCommand(cmd.Cmd):
         commands = {
             'quit': 'Quit command to exit the program',
             'EOF': 'Exit the program with Ctrl+D (EOF)',
-            'create': 'Create a new instance of BaseModel',
+            'create': 'Create a new instance of a given class',
             'show': 'Print the string representation of an instance',
             'destroy': 'Delete an instance based on the class name and id',
             'all': 'Print all string representations of instances',
@@ -164,3 +166,4 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
+
