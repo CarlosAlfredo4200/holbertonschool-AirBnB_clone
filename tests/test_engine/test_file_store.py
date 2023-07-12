@@ -1,121 +1,86 @@
-#!/usr/bin/python3
-'''
-    Testing the file_storage module.
-'''
-
-import os
-import time
-import json
+import datetime
 import unittest
+import os
+import json
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 
-
-class testFileStorage(unittest.TestCase):
-    '''
-        Testing the FileStorage class
-    '''
-
+class TestFileStorage(unittest.TestCase):
     def setUp(self):
-        '''
-            Initializing classes
-        '''
+        self.file_path = os.path.join(os.getcwd(), "test_file.json")
         self.storage = FileStorage()
-        self.my_model = BaseModel()
+        self.base_model = BaseModel()
 
     def tearDown(self):
-        '''
-            Cleaning up.
-        '''
+        if os.path.exists(self.file_path):
+            os.remove(self.file_path)
 
-        try:
-            os.remove("file.json")
-        except FileNotFoundError:
-            pass
+    
+    def test_file_path_default_value(self):
+        self.assertEqual(self.storage._FileStorage__file_path, "file.json")
 
-    def test_all_return_type(self):
-        '''
-            Tests the data type of the return value of the all method.
-        '''
-        storage_all = self.storage.all()
-        self.assertIsInstance(storage_all, dict)
+    def test_objects_default_value(self):
+         self.assertEqual(self.storage._FileStorage__objects, {})
 
-    def test_new_method(self):
-        '''
-            Tests that the new method sets the right key and value pair
-            in the FileStorage.__object attribute
-        '''
-        self.storage.new(self.my_model)
-        key = str(self.my_model.__class__.__name__ + "." + self.my_model.id)
-        self.assertTrue(key in self.storage._FileStorage__objects)
+    def test_all_returns_dictionary_of_objects(self):
+        self.storage.new(self.base_model)
+        objects = self.storage.all()
+        self.assertEqual(objects, {f"BaseModel.{self.base_model.id}": self.base_model})
 
-    def test_objects_value_type(self):
-        '''
-            Tests that the type of value contained in the FileStorage.__object
-            is of type obj.__class__.__name__
-        '''
-        self.storage.new(self.my_model)
-        key = str(self.my_model.__class__.__name__ + "." + self.my_model.id)
-        val = self.storage._FileStorage__objects[key]
-        self.assertIsInstance(self.my_model, type(val))
+    def test_new_adds_object_to_objects_dictionary(self):
+        self.storage.new(self.base_model)
+        expected_key = f"BaseModel.{self.base_model.id}"
+        self.assertIn(expected_key, self.storage._FileStorage__objects)
+        self.assertEqual(
+            str(self.storage._FileStorage__objects[expected_key]),
+            str(self.base_model)
+        )
 
-    def test_save_file_exists(self):
-        '''
-            Tests that a file gets created with the name file.json
-        '''
+    def test_save_creates_file_with_correct_data(self):
+        self.storage.new(self.base_model)
         self.storage.save()
-        self.assertTrue(os.path.isfile("file.json"))
+        with open(self.file_path, "r") as file:
+            data = json.load(file)
+            expected_data = {
+                f"BaseModel.{self.base_model.id}": self.base_model.to_dict()
+            }
+            self.assertEqual(data, expected_data)
 
-    def test_save_file_read(self):
-        '''
-            Testing the contents of the files inside the file.json
-        '''
+    def test_reload_loads_data_from_file(self):
+        self.storage.new(self.base_model)
         self.storage.save()
-        self.storage.new(self.my_model)
+        self.storage.new(BaseModel())
+        self.storage.reload()
+        self.assertEqual(
+            self.storage._FileStorage__objects,
+            {f"BaseModel.{self.base_model.id}": self.base_model}
+        )
 
-        with open("file.json", encoding="UTF8") as fd:
-            content = json.load(fd)
+class TestBaseModel(unittest.TestCase):
+    def test_init_assigns_unique_id_and_datetimes(self):
+        base_model = BaseModel()
+        self.assertIsInstance(base_model.id, str)
+        self.assertIsInstance(base_model.created_at, datetime.datetime)
+        self.assertIsInstance(base_model.updated_at, datetime.datetime)
 
-        self.assertTrue(type(content) is dict)
+    def test_str_returns_correct_string_representation(self):
+        base_model = BaseModel()
+        expected_output = f"[BaseModel] ({base_model.id}) {base_model.__dict__}"
+        self.assertEqual(str(base_model), expected_output)
 
-    def test_the_type_file_content(self):
-        '''
-            testing the type of the contents inside the file.
-        '''
-        self.storage.save()
-        self.storage.new(self.my_model)
+    def test_save_updates_updated_at(self):
+        base_model = BaseModel()
+        initial_updated_at = base_model.updated_at
+        base_model.save()
+        self.assertNotEqual(initial_updated_at, base_model.updated_at)
 
-        with open("file.json", encoding="UTF8") as fd:
-            content = fd.read()
-
-        self.assertIsInstance(content, str)
-
-    def test_reaload_without_file(self):
-        '''
-            Tests that nothing happens when file.json does not exists
-            and reload is called
-        '''
-
-        try:
-            self.storage.reload()
-            self.assertTrue(True)
-        except:
-            self.assertTrue(False)
-
-    def test_FileStorage_instantiation_no_args(self):
-        self.assertEqual(type(FileStorage()), FileStorage)
-
-    def test_FileStorage_instantiation_with_arg(self):
-        with self.assertRaises(TypeError):
-            FileStorage(None)
-
-    def test_FileStorage_file_path_is_private_str(self):
-        self.assertEqual(str, type(FileStorage._FileStorage__file_path))
-
-    def testFileStorage_objects_is_private_dict(self):
-        self.assertEqual(dict, type(FileStorage._FileStorage__objects))
-
-     
+    def test_to_dict_returns_correct_dict_representation(self):
+        base_model = BaseModel()
+        obj_dict = base_model.to_dict()
+        self.assertIsInstance(obj_dict, dict)
+        self.assertEqual(obj_dict["__class__"], "BaseModel")
+        self.assertEqual(obj_dict["created_at"], base_model.created_at.isoformat())
+        self.assertEqual(obj_dict["updated_at"], base_model.updated_at.isoformat())
 
 if __name__ == '__main__':
     unittest.main()
