@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 """Create class file storage"""
+
 import os
 import json
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -26,11 +28,16 @@ class FileStorage:
         self.__objects["{}.{}".format(newObjName, obj.id)] = obj
 
     def save(self):
+        
         """Serialize __objects to the JSON file __file_path."""
+        if self.__file_path is None:
+            
+            return "OK"
         obj_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
         with open(self.__file_path, "w") as file:
             json.dump(obj_dict, file)
-
+            return "OK"
+        
     def load(self):
         """
         Loads the content of the JSON file into the dictionary of objects.
@@ -70,7 +77,7 @@ class FileStorage:
 
         """
         class_name, obj_id = key.split('.')
-        class_dict = {"BaseModel": BaseModel}
+        class_dict = {"BaseModel": BaseModel, "User": User}
         if class_name in class_dict:
             return class_dict[class_name](**value)
         else:
