@@ -1,8 +1,13 @@
 #!/usr/bin/python3
 """Create class file storage"""
+
+#!/usr/bin/python3
+"""Create class file storage"""
+
 import os
 import json
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -70,7 +75,7 @@ class FileStorage:
 
         """
         class_name, obj_id = key.split('.')
-        class_dict = {"BaseModel": BaseModel}
+        class_dict = {"BaseModel": BaseModel, "User": User}
         if class_name in class_dict:
             return class_dict[class_name](**value)
         else:

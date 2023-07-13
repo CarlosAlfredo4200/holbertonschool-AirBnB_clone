@@ -2,9 +2,19 @@ import datetime
 import unittest
 import os
 import json
+<<<<<<< HEAD
+=======
+import models
+>>>>>>> 80145c61fb0c9f412ac438c4bbbc6a8dbd5501d1
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+from models.user import User
+ 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 80145c61fb0c9f412ac438c4bbbc6a8dbd5501d1
 class TestFileStorage(unittest.TestCase):
     def setUp(self):
         self.file_path = os.path.join(os.getcwd(), "test_file.json")
@@ -15,17 +25,33 @@ class TestFileStorage(unittest.TestCase):
         if os.path.exists(self.file_path):
             os.remove(self.file_path)
 
+<<<<<<< HEAD
     
     def test_file_path_default_value(self):
         self.assertEqual(self.storage._FileStorage__file_path, "file.json")
 
     def test_objects_default_value(self):
          self.assertEqual(self.storage._FileStorage__objects, {})
+=======
+    def test_file_path_default_value(self):
+        self.assertEqual(self.storage._FileStorage__file_path, "file.json")
+
+    def test_file_path(self):
+        """
+        Test that __file_path attribute is set correctly.
+        """
+        self.assertEqual(self.storage._FileStorage__file_path, "file.json")
+>>>>>>> 80145c61fb0c9f412ac438c4bbbc6a8dbd5501d1
 
     def test_all_returns_dictionary_of_objects(self):
         self.storage.new(self.base_model)
         objects = self.storage.all()
+<<<<<<< HEAD
         self.assertEqual(objects, {f"BaseModel.{self.base_model.id}": self.base_model})
+=======
+        self.assertEqual(
+            objects, {f"BaseModel.{self.base_model.id}": self.base_model})
+>>>>>>> 80145c61fb0c9f412ac438c4bbbc6a8dbd5501d1
 
     def test_new_adds_object_to_objects_dictionary(self):
         self.storage.new(self.base_model)
@@ -36,6 +62,7 @@ class TestFileStorage(unittest.TestCase):
             str(self.base_model)
         )
 
+<<<<<<< HEAD
     def test_save_creates_file_with_correct_data(self):
         self.storage.new(self.base_model)
         self.storage.save()
@@ -82,5 +109,24 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(obj_dict["created_at"], base_model.created_at.isoformat())
         self.assertEqual(obj_dict["updated_at"], base_model.updated_at.isoformat())
 
+=======
+    def test_all(self):
+        all_objs = self.storage.all()
+        self.assertEqual(all_objs, self.storage._FileStorage__objects)
+
+    def test_new(self):
+        bm = BaseModel()
+        us = User()
+         
+        models.storage.new(bm)
+        models.storage.new(us)
+         
+        self.assertIn("BaseModel." + bm.id, models.storage.all().keys())
+        self.assertIn(bm, models.storage.all().values())
+        self.assertIn("User." + us.id, models.storage.all().keys())
+        self.assertIn(us, models.storage.all().values())
+         
+    
+>>>>>>> 80145c61fb0c9f412ac438c4bbbc6a8dbd5501d1
 if __name__ == '__main__':
     unittest.main()
