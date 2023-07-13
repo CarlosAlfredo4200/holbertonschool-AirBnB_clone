@@ -97,6 +97,6 @@ class TestFileStorage(unittest.TestCase):
         storage._FileStorage__file_path = None
         result = storage.save()
         self.assertEqual(result, "OK")
-        
+
 if __name__ == '__main__':
     unittest.main()
