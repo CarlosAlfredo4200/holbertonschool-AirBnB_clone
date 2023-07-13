@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """a program called console.py"""
+
 import cmd
 import json
 from models.base_model import BaseModel
@@ -109,8 +110,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        print([str(value)
-              for key, value in instances.items() if key.startswith(args[0])])
+        print([str(value) for key, value in instances.items() if key.startswith(args[0])])
 
     def do_update(self, arg):
         """Update an instance based on the class name and id"""
