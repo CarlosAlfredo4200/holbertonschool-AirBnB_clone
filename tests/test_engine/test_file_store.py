@@ -58,7 +58,12 @@ class TestFileStorage(unittest.TestCase):
         self.assertIn(bm, models.storage.all().values())
         self.assertIn("User." + us.id, models.storage.all().keys())
         self.assertIn(us, models.storage.all().values())
-         
+    
+    def test_file_path_none_returns_ok(self):
+        storage = FileStorage()
+        storage._FileStorage__file_path = None
+        result = storage.save()
+        self.assertEqual(result, "OK")
     
 if __name__ == '__main__':
     unittest.main()
