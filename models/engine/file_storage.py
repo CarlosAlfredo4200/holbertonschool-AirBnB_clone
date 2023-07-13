@@ -1,115 +1,69 @@
 #!/usr/bin/python3
-"""Create class file storage"""
-
-import os
+import os.path
 import json
-from models.base_model import BaseModel
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
+import os
+"""
+Module file_storage
+Contains a class FileStorage
+that serializes instances to a JSON file and
+deserializes JSON file to instances
+"""
 
 
-class FileStorage:
+class FileStorage():
     """
-    FileStorage class that manages the storage
-    and retrieval of objects in a JSON file.
+    that serializes instances to a JSON file and deserializes JSON file
     """
-
+    ''' initializing values '''
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
-        """
-        Returns the dictionary of stored objects.
-        """
+        ''' returns the dictionary __objects '''
         return self.__objects
 
     def new(self, obj):
-        """Set in __objects obj with key <obj_class_name>.id"""
-        newObjName = obj.__class__.__name__
-        self.__objects["{}.{}".format(newObjName, obj.id)] = obj
+        ''' sets in __objects the obj with key <obj class name>.id '''
+        if obj:
+            ''' adds the object and the key to __objects if the obj exists '''
+            name = "{}.{}".format(obj.__class__.__name__, obj.id)
+            self.__objects[name] = obj
 
     def save(self):
-        """Serialize __objects to the JSON file __file_path."""
-        if self.__file_path is None:
+        ''' serializes __objects to the JSON file (path: __file_path) '''
+        my_dict = {}
 
-            return "OK"
-        obj_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
-        with open(self.__file_path, "w") as file:
-            json.dump(obj_dict, file)
-            return "OK"
+        for keys, val in self.__objects.items():
+            ''' serialize each object using the key '''
+            my_dict[keys] = val.to_dict()
 
-    def load(self):
-        """
-        Loads the content of the JSON file into the dictionary of objects.
-        If the file doesn't exist, no exception is raised.
-        """
-        try:
-            with open(self.__file_path, "r") as file:
-                data = json.load(file)
-                self.__objects = {key: self.__create_instance(
-                    key, value) for key, value in data.items()}
-        except FileNotFoundError:
-            pass
+        with open(self.__file_path, "w") as my_file:
+            json.dump(my_dict, my_file)
 
     def reload(self):
-        """
-        Reloads the content of the JSON file into the dictionary of objects.
-        """
-        if os.path.exists(self.__file_path):
-            with open(self.__file_path, "r") as file:
-                try:
-                    data = json.load(file)
-                    self.__objects = {key: self.__create_instance(
-                        key, value) for key, value in data.items()}
-                except json.JSONDecodeError:
-                    pass
+        ''' deserializes/loads the JSON file to __objects '''
 
-    def __create_instance(self, key, value):
-        """
-        Creates an instance of a class based on the key and value.
-
-        Args:
-            key (str): Key representing the class name and object id.
-            value (dict): Dictionary containing the attributes of the object.
-
-        Returns:
-            instance: An instance of the class represented by the key.
-
-        """
-        class_name, obj_id = key.split('.')
-        class_dict = {"BaseModel": BaseModel, "User": User}
-        if class_name in class_dict:
-            return class_dict[class_name](**value)
-        else:
-            return None
-
-    def __create_instance(self, key, value):
-        """
-        Creates an instance of a class based on the key and value.
-
-        Args:
-            key (str): Key representing the class name and object id.
-            value (dict): Dictionary containing the attributes of the object.
-
-        Returns:
-            instance: An instance of the class represented by the key.
-
-        """
-        class_dict = {
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.place import Place
+        from models.review import Review
+        my_dict = {
             "BaseModel": BaseModel,
             "User": User,
-            "Place": Place,
             "State": State,
             "City": City,
             "Amenity": Amenity,
+            "Place": Place,
             "Review": Review
-        }
-        class_name, obj_id = key.split('.')
-        if class_name in class_dict:
-            return class_dict[class_name](**value)
-        else:
-            return None
+            }
+        if not os.path.isfile(self.__file_path):
+            return
+        with open(self.__file_path, "r") as file_path:
+            objects = json.load(file_path)
+            self.__objects = {}
+            for key in objects:
+                name = key.split(".")[0]
+                self.__objects[key] = my_dict[name](**objects[key])
