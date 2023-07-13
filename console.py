@@ -5,25 +5,12 @@ import cmd
 import json
 from models.base_model import BaseModel
 from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
 from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
-    classes = {
-        'BaseModel': BaseModel,
-        'User': User,
-        'Place': Place,
-        'State': State,
-        'City': City,
-        'Amenity': Amenity,
-        'Review': Review
-    }
+    classes = {'BaseModel': BaseModel, 'User': User}
 
     def do_quit(self, arg):
         """Quit command to exit the program"""
@@ -150,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
         except ValueError:
             pass
 
-        setattr(instance, attribute, value)
+        instance.__dict__[attribute] = value
         instance.save()
 
     def do_help(self, arg):
@@ -177,5 +164,4 @@ class HBNBCommand(cmd.Cmd):
                 print("{:<10} {}".format(command, description))
 
 
-if __name__ == '__main__':
-    HBNBCommand().cmdloop()
+
