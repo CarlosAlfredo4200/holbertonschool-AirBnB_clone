@@ -1,11 +1,19 @@
 #!/usr/bin/python3
 """
-class console:
+class console Name:
 
 """
 import cmd
-
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+from models import storage
 from typing import Tuple, Optional
+import inspect
 
 
 class HBNBCommand(cmd.Cmd):
@@ -50,6 +58,7 @@ class HBNBCommand(cmd.Cmd):
             args (str): Arguments passed to the command.
         """
 
+
     def do_show(self, args: str):
         """
         Print the string representation of an instance.
@@ -57,6 +66,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             args (str): Arguments passed to the command.
         """
+
 
     def do_all(self, args: Optional[str]):
         """
@@ -66,6 +76,7 @@ class HBNBCommand(cmd.Cmd):
             args (Optional[str]): Arguments passed to the command.
         """
 
+
     def do_destroy(self, args: str):
         """
         Delete an instance based on the class name and id.
@@ -74,6 +85,7 @@ class HBNBCommand(cmd.Cmd):
             args (str): Arguments passed to the command.
         """
 
+
     def do_update(self, args: str):
         """
         Update an instance based on the class name and id.
@@ -81,6 +93,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             args (str): Arguments passed to the command.
         """
+
 
     def complete_add(self, text: str) -> str:
         """
@@ -100,6 +113,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             line (str): Command line entered by the user.
         """
+        
 
     def emptyline(self):
         """
@@ -114,6 +128,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             args (str): Arguments passed to the command.
         """
+       
 
     def _parse_args(self, arguments: str) -> Tuple[str, str]:
         """
@@ -125,6 +140,7 @@ class HBNBCommand(cmd.Cmd):
         Returns:
             Tuple[str, str]: Method and internal arguments.
         """
+        
 
     def _execute(self, method: str, internal_args: str):
         """
@@ -134,6 +150,8 @@ class HBNBCommand(cmd.Cmd):
             method (str): Method to be executed.
             internal_args (str): Internal arguments for the method.
         """
+      
+      
 
     def do_BaseModel(self, arguments: str):
         """
@@ -142,6 +160,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             arguments (str): Arguments passed to the command.
         """
+        
 
     def do_User(self, arguments: str):
         """
@@ -150,6 +169,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             arguments (str): Arguments passed to the command.
         """
+   
 
     def do_Place(self, arguments: str):
         """
@@ -158,6 +178,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             arguments (str): Arguments passed to the command.
         """
+      
 
     def do_Amenity(self, arguments: str):
         """
@@ -166,6 +187,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             arguments (str): Arguments passed to the command.
         """
+       
 
     def do_City(self, arguments: str):
         """
@@ -174,6 +196,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             arguments (str): Arguments passed to the command.
         """
+       
 
     def do_Review(self, arguments: str):
         """
@@ -182,6 +205,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             arguments (str): Arguments passed to the command.
         """
+       
 
     def do_State(self, arguments: str):
         """
@@ -190,6 +214,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             arguments (str): Arguments passed to the command.
         """
+       
 
 
 if __name__ == '__main__':
