@@ -178,7 +178,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             arguments (str): Arguments passed to the command.
         """
-        # Code implementation omitted for brevity
+      
 
     def do_Amenity(self, arguments: str) -> None:
         """
