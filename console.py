@@ -214,7 +214,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             arguments (str): Arguments passed to the command.
         """
-        # Code implementation omitted for brevity
+       
 
 
 if __name__ == '__main__':
