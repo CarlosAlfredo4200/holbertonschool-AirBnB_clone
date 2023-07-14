@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """a class console"""
-
 import cmd
 import json
 import os
@@ -12,6 +11,8 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 from models import storage
+
+
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
     classes = {
@@ -106,22 +107,16 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """Print all string representations of instances"""
+        if arg and arg not in self.classes:
+            print("** class doesn't exist **")
+            return
+
         if arg == "User":
             instances = storage.all(User)
         else:
             instances = storage.all()
 
-        if not arg:
-            print([str(value) for value in instances.values()])
-            return
-
-        args = arg.split()
-        if args[0] not in self.classes:
-            print("** class doesn't exist **")
-            return
-
-        print([str(value)
-               for key, value in instances.items() if key.startswith(args[0])])
+        print([str(value) for value in instances.values()])
 
     def do_update(self, arg):
         """Update an instance based on the class name and id"""
@@ -193,8 +188,5 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == '__main__':
-    file_path = "file.json"
-    if not os.path.exists(file_path):
-        print("OK")
-    else:
-        HBNBCommand().cmdloop()
+    storage.reload()
+    HBNBCommand().cmdloop()
