@@ -1,52 +1,29 @@
+#!/usr/bin/python3
 """
-Module Name:
-place
+class place:
 
-Module Description:
-This module contains only one class
-
-Module Classes:
-- Place
-
-Module Attributes:
-- None
 """
 from models.base_model import BaseModel
 
 
 class Place(BaseModel):
     """
-    The Place class is a Python class that inherits from the BaseModel class.
+    Place class that inherits from BaseModel.
 
     Attributes:
-    - city_id: a string representing the id of the City
-               instance in which the place is located.
-    - user_id: a string representing the id of the User
-               instance that owns the place.
-    - name: a string representing the name of the place.
-    - description: a string representing the description of the place.
-    - number_rooms: an integer representing the number of rooms in the place.
-    - number_bathrooms: an integer representing the number of
-                        bathrooms in the place.
-    - max_guest: an integer representing the maximum number
-                 of guests the place can accommodate.
-    - price_by_night: an integer representing the price per
-                      night to stay at the place.
-    - latitude: a float representing the latitude of the place's location.
-    - longitude: a float representing the longitude of the place's location.
-    - amenity_ids: a list of strings representing the ids of the Amenity
-                   instances that are associated with the place.
-
-    Methods:
-    - __init__(self, *args, kwargs) -> None
-        Constructor method that initializes the attributes of the class.
-        Calls the constructor of the parent class BaseModel and creates
-        the Place instance.
-    - __str__() -> str
-        Method that returns a string representation of the instance.
-    - to_dict() -> dict
-        Method that returns a dictionary representation of the instance.
+        city_id (str): ID of the city where the place is located.
+        user_id (str): ID of the user who owns the place.
+        name (str): Name of the place.
+        description (str): Description of the place.
+        number_rooms (int): Number of rooms in the place.
+        number_bathrooms (int): Number of bathrooms in the place.
+        max_guest (int): Maximum number of guests allowed in the place.
+        price_by_night (int): Price per night for the place.
+        latitude (float): Latitude coordinate of the place's location.
+        longitude (float): Longitude coordinate of the place's location.
+        amenity_ids (list): List of IDs of amenities associated with the place.
     """
+
     city_id = ""
     user_id = ""
     name = ""
