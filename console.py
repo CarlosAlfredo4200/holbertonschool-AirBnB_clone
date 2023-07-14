@@ -151,7 +151,8 @@ class HBNBCommand(cmd.Cmd):
             method (str): Method to be executed.
             internal_args (str): Internal arguments for the method.
         """
-        # Code implementation omitted for brevity
+      
+      
 
     def do_BaseModel(self, arguments: str) -> None:
         """
