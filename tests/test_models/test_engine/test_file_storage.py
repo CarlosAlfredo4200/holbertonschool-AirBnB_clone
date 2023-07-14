@@ -1,69 +1,39 @@
-import datetime
-import unittest
-import os
+#!/usr/bin/python3
+"""
+Module ``test_file_storage``
+Tests for FileStorage class
+"""
 import json
-import models
-from models.base_model import BaseModel
+import os
+import unittest
 from models.engine.file_storage import FileStorage
-from models.user import User
- 
+from models.base_model import BaseModel
 
 
 class TestFileStorage(unittest.TestCase):
-    def setUp(self):
-        self.file_path = os.path.join(os.getcwd(), "test_file.json")
-        self.storage = FileStorage()
-        self.base_model = BaseModel()
+    """
+    Tests FileStorage class methods
+    """
 
-    def tearDown(self):
-        if os.path.exists(self.file_path):
-            os.remove(self.file_path)
-
-    def test_file_path_default_value(self):
-        self.assertEqual(self.storage._FileStorage__file_path, "file.json")
-
-    def test_file_path(self):
+    def test_file_storage_attributes(self):
         """
-        Test that __file_path attribute is set correctly.
+        Testing FileStorage atributtes
         """
-        self.assertEqual(self.storage._FileStorage__file_path, "file.json")
-
-    def test_all_returns_dictionary_of_objects(self):
-        self.storage.new(self.base_model)
-        objects = self.storage.all()
-        self.assertEqual(
-            objects, {f"BaseModel.{self.base_model.id}": self.base_model})
-
-    def test_new_adds_object_to_objects_dictionary(self):
-        self.storage.new(self.base_model)
-        expected_key = f"BaseModel.{self.base_model.id}"
-        self.assertIn(expected_key, self.storage._FileStorage__objects)
-        self.assertEqual(
-            str(self.storage._FileStorage__objects[expected_key]),
-            str(self.base_model)
-        )
-
-    def test_all(self):
-        all_objs = self.storage.all()
-        self.assertEqual(all_objs, self.storage._FileStorage__objects)
-
-    def test_new(self):
-        bm = BaseModel()
-        us = User()
-         
-        models.storage.new(bm)
-        models.storage.new(us)
-         
-        self.assertIn("BaseModel." + bm.id, models.storage.all().keys())
-        self.assertIn(bm, models.storage.all().values())
-        self.assertIn("User." + us.id, models.storage.all().keys())
-        self.assertIn(us, models.storage.all().values())
-    
-    def test_file_path_none_returns_ok(self):
         storage = FileStorage()
-        storage._FileStorage__file_path = None
-        result = storage.save()
-        self.assertEqual(result, "OK")
-    
-if __name__ == '__main__':
-    unittest.main()
+        self.assertEqual(storage._FileStorage__file_path, 'file.json')
+
+    def test_file_storage_methods(self):
+        """
+        Testing FileStorage methods
+        """
+        storage = FileStorage()
+        instanceBM = BaseModel()
+        storage.save()
+        with open('file.json') as file:
+            loaded = json.loads(file.read())
+        storage.all().clear()
+        storage.reload()
+        self.assertEqual(storage.all().get(
+            f'BaseModel.{instanceBM.id}').id, instanceBM.id)
+        storage.all().clear()
+        os.remove('file.json')

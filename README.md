@@ -1,8 +1,7 @@
 # holbertonschool-AirBnB_clone
 
-# 0x00. AirBnB clone - The console
- Foundations >  AirBnB clone
-
+# AirBnB clone - The console
+  
 ..............................................................................
 ..............................................................................
  
@@ -32,7 +31,7 @@ All tests should also pass in non-interactive mode: $ echo "python3 -m unittest 
 
 ## Execution
 Your shell should work like this in interactive mode:
-```
+
 $ ./console.py
 (hbnb)help
 
@@ -44,11 +43,11 @@ EOF  all  count  create  destroy  help  nothing  quit  show  update
 (hbnb) 
 (hbnb)quit
 $ 
-```
+
 
 But also in non-interactive mode: (like the Shell project in C)
 
-```
+
 $ echo "help" | ./console.py
 (hbnb)
 
@@ -68,18 +67,18 @@ Documented commands (type help <topic>):
 EOF  all  count  create  destroy  help  nothing  quit  show  update
 (hbnb) 
 $
-```
+
 
 All tests should also pass in non-interactive mode: 
 
 > $ echo "python3 -m unittest discover tests" | bash
-```
+
 .......
 ----------------------------------------------------------------------
 Ran 52 tests in 0.021s
 
 OK
-```
+
 
 
 ## Tasks
@@ -100,12 +99,12 @@ OK
 ## 2. Unittests   [ tests/ ]
   All your files, classes, functions must be tested with unit tests
   > python3 -m unittest discover tests 
- **Warning:**
+ *Warning:*
 Unit tests must also pass in non-interactive mode:
   > echo "python3 -m unittest discover tests" | bash 
  
  
-## 3. BaseModel  [ models/base_model.py, models/__init__.py, tests/ ]
+## 3. BaseModel  [ models/base_model.py, models/_init_.py, tests/ ]
   Write a class BaseModel that defines all common attributes/methods for other classes:
 * [ models/base_model.py ]
 * Public instance attributes:
@@ -114,12 +113,12 @@ Unit tests must also pass in non-interactive mode:
    the goal is to have unique id for each BaseModel
 [ created_at: ] datetime - assign with the current datetime when an instance is created
 [ updated_at: ] datetime - assign with the current datetime when an instance is created and it will be updated every time you change your object
-* __str__: should print: [<class name>] (<self.id>) <self.__dict__>
+* _str: should print: [<class name>] (<self.id>) <self.dict_>
 * Public instance methods:
 [ save(self): ] updates the public instance attribute updated_at with the current datetime
-[ to_dict(self): ] returns a dictionary containing all keys/values of __dict__ of the instance:
-by using self.__dict__, only instance attributes set will be returned
-a key __class__ must be added to this dictionary with the class name of the object
+[ to_dict(self): ] returns a dictionary containing all keys/values of _dict_ of the instance:
+by using self._dict_, only instance attributes set will be returned
+a key _class_ must be added to this dictionary with the class name of the object
 created_at and updated_at must be converted to string object in ISO format:
 format: %Y-%m-%dT%H:%M:%S.%f (ex: 2017-06-14T22:31:03.285259)
 you can use isoformat() of datetime object
@@ -136,20 +135,20 @@ This method will be the first piece of the serialization/deserialization process
 ## 4. Create BaseModel from dictionary  [ models/base_model.py, tests/ ]
  Previously we created a method to generate a dictionary representation of an instance (method to_dict()).
  Now it’s time to re-create an instance with this dictionary representation.
-```
+
 <class 'BaseModel'> -> to_dict() -> <class 'dict'> -> <class 'BaseModel'>
-```
+
 > ./test_base_model_dict.py
 
-## 5. Store first object  [ models/__init__.py, models/base_model.py, tests/ ]
+## 5. Store first object  [ models/_init_.py, models/base_model.py, tests/ ]
   Now we can recreate a BaseModel from another one by using a dictionary representation:
-```
+
 <class 'BaseModel'> -> to_dict() -> <class 'dict'> -> <class 'BaseModel'> 
-```
+
 Now the flow of serialization-deserialization will be:
-```
+
 <class 'BaseModel'> -> to_dict() -> <class 'dict'> -> JSON dump -> <class 'str'> -> FILE -> <class 'str'> -> JSON load -> <class 'dict'> -> <class 'BaseModel'>
-```
+
 > ./test_save_reload_base_model.py
 
 ## 6. Console 0.0.1  [ console.py  ]
@@ -163,7 +162,7 @@ a custom prompt: [ (hbnb) ]
 an empty line + [ ENTER ] shouldn’t execute anything
 * Your code should not be executed when imported
 > ./console.py
-```
+
 $ ./console.py
 (hbnb) help
 
@@ -179,38 +178,38 @@ Quit command to exit the program
 (hbnb) 
 (hbnb) quit 
 $
-```
+
 
 ## 7. Console 0.1    [ console.py ]
 Update your command interpreter (console.py) to have these commands:
 * [create] : Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id. Ex: $ create BaseModel
-If the class name is missing, print ** class name missing ** (ex: $ create)
-If the class name doesn’t exist, print ** class doesn't exist ** (ex: $ create MyModel)
+If the class name is missing, print * class name missing * (ex: $ create)
+If the class name doesn’t exist, print * class doesn't exist * (ex: $ create MyModel)
 * [show] : Prints the string representation of an instance based on the class name and id. Ex: $ show BaseModel 1234-1234-1234.
-If the class name is missing, print ** class name missing ** (ex: $ show)
-If the class name doesn’t exist, print ** class doesn't exist ** (ex: $ show MyModel)
-If the id is missing, print ** instance id missing ** (ex: $ show BaseModel)
-If the instance of the class name doesn’t exist for the id, print ** no instance found ** (ex: $ show BaseModel 121212)
+If the class name is missing, print * class name missing * (ex: $ show)
+If the class name doesn’t exist, print * class doesn't exist * (ex: $ show MyModel)
+If the id is missing, print * instance id missing * (ex: $ show BaseModel)
+If the instance of the class name doesn’t exist for the id, print * no instance found * (ex: $ show BaseModel 121212)
 * [destroy] : Deletes an instance based on the class name and id (save the change into the JSON file). Ex: $ destroy BaseModel 1234-1234-1234.
-If the class name is missing, print ** class name missing ** (ex: $ destroy)
-If the class name doesn’t exist, print ** class doesn't exist ** (ex:$ destroy MyModel)
-If the id is missing, print ** instance id missing ** (ex: $ destroy BaseModel)
-If the instance of the class name doesn’t exist for the id, print ** no instance found ** (ex: $ destroy BaseModel 121212)
+If the class name is missing, print * class name missing * (ex: $ destroy)
+If the class name doesn’t exist, print * class doesn't exist * (ex:$ destroy MyModel)
+If the id is missing, print * instance id missing * (ex: $ destroy BaseModel)
+If the instance of the class name doesn’t exist for the id, print * no instance found * (ex: $ destroy BaseModel 121212)
 * [all] : Prints all string representation of all instances based or not on the class name. Ex: $ all BaseModel or $ all.
 The printed result must be a list of strings (like the example below)
-If the class name doesn’t exist, print ** class doesn't exist ** (ex: $ all MyModel)
+If the class name doesn’t exist, print * class doesn't exist * (ex: $ all MyModel)
 * [update] : Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file). Ex: $ update BaseModel 1234-1234-1234 email "aibnb@holbertonschool.com".
 Usage: update <class name> <id> <attribute name> "<attribute value>"
-If the class name is missing, print ** class name missing ** (ex: $ update)
-If the class name doesn’t exist, print ** class doesn't exist ** (ex: $ update MyModel)
-If the id is missing, print ** instance id missing ** (ex: $ update BaseModel)
-If the instance of the class name doesn’t exist for the id, print ** no instance found ** (ex: $ update BaseModel 121212)
-If the attribute name is missing, print ** attribute name missing ** (ex: $ update BaseModel existing-id)
-If the value for the attribute name doesn’t exist, print ** value missing ** (ex: $ update BaseModel existing-id first_name)
+If the class name is missing, print * class name missing * (ex: $ update)
+If the class name doesn’t exist, print * class doesn't exist * (ex: $ update MyModel)
+If the id is missing, print * instance id missing * (ex: $ update BaseModel)
+If the instance of the class name doesn’t exist for the id, print * no instance found * (ex: $ update BaseModel 121212)
+If the attribute name is missing, print * attribute name missing * (ex: $ update BaseModel existing-id)
+If the value for the attribute name doesn’t exist, print * value missing * (ex: $ update BaseModel existing-id first_name)
 All other arguments should not be used (Ex: $ update BaseModel 1234-1234-1234 email "aibnb@holbertonschool.com" first_name "Betty" = $ update BaseModel 1234-1234-1234 email "aibnb@holbertonschool.com")
 id, created_at and updated_at cant’ be updated. You can assume they won’t be passed in the update command
 
-```
+
 (hbnb) all MyModel
 ** class doesn't exist **
 (hbnb) show BaseModel
@@ -236,7 +235,7 @@ show BaseModel 49faff9a-6318-451f-87b6-910505c55907
 (hbnb) show BaseModel 49faff9a-6318-451f-87b6-910505c55907
 ** no instance found **
 (hbnb)
-```
+
 ## 8. First User  [ models/user.py, models/engine/file_storage.py, console.py, tests/ ]
   Write a class User that inherits from BaseModel:
 * models/user.py
@@ -301,7 +300,7 @@ Errors management must be the same as previously.
 $ ./console.py
 (hbnb) User.show("246c227a-d5c1-403d-9bc7-6a47bb9f0f68")
 (hbnb) User.show("Holberton")
-** no instance found **
+* no instance found *
 (hbnb) 
 
 ## 14. Destroy  [ console.py ]
@@ -314,7 +313,7 @@ $ ./console.py
 (hbnb) User.count()
 1
 (hbnb) User.destroy("Holberton")
-** no instance found **
+* no instance found *
 (hbnb) 
 
 ## 15. Update  [   ]
@@ -346,4 +345,3 @@ Errors management must be the same as previously.
 Contributors:
 1. Carlos Alfredo Montoya <6424@holbertonstudents.com>
 2. Ruben Dario florez <6427@holbertonstudents.com>
-..........................................................................................................................
