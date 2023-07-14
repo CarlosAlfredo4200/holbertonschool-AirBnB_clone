@@ -141,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
         Returns:
             Tuple[str, str]: Method and internal arguments.
         """
-        # Code implementation omitted for brevity
+        
 
     def _execute(self, method: str, internal_args: str) -> None:
         """
