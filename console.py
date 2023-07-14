@@ -129,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             args (str): Arguments passed to the command.
         """
-        # Code implementation omitted for brevity
+       
 
     def _parse_args(self, arguments: str) -> Tuple[str, str]:
         """
