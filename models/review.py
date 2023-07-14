@@ -8,6 +8,4 @@ class Review(BaseModel):
     user_id = ""
     text = ""
 
-    def __init__(self, *args, **kwargs):
-        """Constructor for Review"""
-        super().__init__(*args, **kwargs)
+     
