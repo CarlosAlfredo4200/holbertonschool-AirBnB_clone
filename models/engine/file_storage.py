@@ -1,6 +1,12 @@
 #!/usr/bin/python3
 """Create class file storage"""
 
+#!/usr/bin/python3
+"""Create class file storage"""
+
+
+
+
 import os
 import json
 from models.base_model import BaseModel
@@ -10,8 +16,6 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
-
 class FileStorage:
     """
     FileStorage class that manages the storage
@@ -33,14 +37,16 @@ class FileStorage:
         self.__objects["{}.{}".format(newObjName, obj.id)] = obj
 
     def save(self):
-        """
-        This method saves the dictionary of objects to the JSON file.
-        """
-        objects_dict = {}
-        for key, value in self.__objects.items():
-            objects_dict[key] = value.to_dict()
-        with open(self.__file_path, "w", encoding='utf-8') as fl:
-            json.dump(objects_dict, fl, indent=4)
+        """Serialize __objects to the JSON file __file_path."""
+        if self.__file_path is None:
+            return
+
+        obj_dict = {}
+        for key, obj in self.__objects.items():
+            obj_dict[key] = obj.to_dict()
+
+        with open(self.__file_path, "w") as file:
+            json.dump(obj_dict, file)
 
     def load(self):
         """
@@ -50,8 +56,19 @@ class FileStorage:
         try:
             with open(self.__file_path, "r") as file:
                 data = json.load(file)
-                self.__objects = {key: self.__create_instance(
-                    key, value) for key, value in data.items()}
+                for key, value in data.items():
+                    class_name, obj_id = key.split('.')
+                    class_dict = {
+                        "BaseModel": BaseModel,
+                        "User": User,
+                        "Place": Place,
+                        "State": State,
+                        "City": City,
+                        "Amenity": Amenity,
+                        "Review": Review
+                    }
+                    if class_name in class_dict:
+                        self.__objects[key] = class_dict[class_name](**value)
         except FileNotFoundError:
             pass
 
@@ -60,56 +77,10 @@ class FileStorage:
         Reloads the content of the JSON file into the dictionary of objects.
         """
         if os.path.exists(self.__file_path):
-            with open(self.__file_path, "r") as file:
-                try:
-                    data = json.load(file)
-                    self.__objects = {key: self.__create_instance(
-                        key, value) for key, value in data.items()}
-                except json.JSONDecodeError:
-                    pass
+            self.load()
 
-    def __create_instance(self, key, value):
+    def __str__(self):
         """
-        Creates an instance of a class based on the key and value.
-
-        Args:
-            key (str): Key representing the class name and object id.
-            value (dict): Dictionary containing the attributes of the object.
-
-        Returns:
-            instance: An instance of the class represented by the key.
-
+        Returns a string representation of the FileStorage object.
         """
-        class_name, obj_id = key.split('.')
-        class_dict = {"BaseModel": BaseModel, "User": User}
-        if class_name in class_dict:
-            return class_dict[class_name](**value)
-        else:
-            return None
-
-    def __create_instance(self, key, value):
-        """
-        Creates an instance of a class based on the key and value.
-
-        Args:
-            key (str): Key representing the class name and object id.
-            value (dict): Dictionary containing the attributes of the object.
-
-        Returns:
-            instance: An instance of the class represented by the key.
-
-        """
-        class_dict = {
-            "BaseModel": BaseModel,
-            "User": User,
-            "Place": Place,
-            "State": State,
-            "City": City,
-            "Amenity": Amenity,
-            "Review": Review
-        }
-        class_name, obj_id = key.split('.')
-        if class_name in class_dict:
-            return class_dict[class_name](**value)
-        else:
-            return None
+        return str(self.__objects)

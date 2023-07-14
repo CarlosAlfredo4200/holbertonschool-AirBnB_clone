@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """a class console"""
+
 import cmd
 import json
 import os
@@ -11,8 +12,6 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 from models import storage
-
-
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
     classes = {
@@ -67,7 +66,11 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        instances = storage.all()
+        if args[0] == "User":
+            instances = storage.all(User)
+        else:
+            instances = storage.all()
+
         key = args[0] + '.' + args[1]
         if key in instances:
             print(instances[key])
@@ -89,7 +92,11 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        instances = storage.all()
+        if args[0] == "User":
+            instances = storage.all(User)
+        else:
+            instances = storage.all()
+
         key = args[0] + '.' + args[1]
         if key in instances:
             del instances[key]
@@ -99,7 +106,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """Print all string representations of instances"""
-        instances = storage.all()
+        if arg == "User":
+            instances = storage.all(User)
+        else:
+            instances = storage.all()
 
         if not arg:
             print([str(value) for value in instances.values()])
@@ -111,7 +121,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         print([str(value)
-              for key, value in instances.items() if key.startswith(args[0])])
+               for key, value in instances.items() if key.startswith(args[0])])
 
     def do_update(self, arg):
         """Update an instance based on the class name and id"""
@@ -128,7 +138,11 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        instances = storage.all()
+        if args[0] == "User":
+            instances = storage.all(User)
+        else:
+            instances = storage.all()
+
         key = args[0] + '.' + args[1]
         if key not in instances:
             print("** no instance found **")
