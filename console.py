@@ -67,7 +67,11 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        instances = storage.all()
+        if args[0] == "User":
+            instances = storage.all(User)
+        else:
+            instances = storage.all()
+
         key = args[0] + '.' + args[1]
         if key in instances:
             print(instances[key])
@@ -89,7 +93,11 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        instances = storage.all()
+        if args[0] == "User":
+            instances = storage.all(User)
+        else:
+            instances = storage.all()
+
         key = args[0] + '.' + args[1]
         if key in instances:
             del instances[key]
@@ -99,19 +107,16 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """Print all string representations of instances"""
-        instances = storage.all()
-
-        if not arg:
-            print([str(value) for value in instances.values()])
-            return
-
-        args = arg.split()
-        if args[0] not in self.classes:
+        if arg and arg not in self.classes:
             print("** class doesn't exist **")
             return
 
-        print([str(value)
-              for key, value in instances.items() if key.startswith(args[0])])
+        if arg == "User":
+            instances = storage.all(User)
+        else:
+            instances = storage.all()
+
+        print([str(value) for value in instances.values()])
 
     def do_update(self, arg):
         """Update an instance based on the class name and id"""
@@ -128,7 +133,11 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        instances = storage.all()
+        if args[0] == "User":
+            instances = storage.all(User)
+        else:
+            instances = storage.all()
+
         key = args[0] + '.' + args[1]
         if key not in instances:
             print("** no instance found **")
@@ -179,8 +188,5 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == '__main__':
-    file_path = "file.json"
-    if not os.path.exists(file_path):
-        print("OK")
-    else:
-        HBNBCommand().cmdloop()
+    storage.reload()
+    HBNBCommand().cmdloop()
