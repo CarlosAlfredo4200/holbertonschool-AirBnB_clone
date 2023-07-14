@@ -1,16 +1,7 @@
 #!/usr/bin/python3
 """
-Module Name:
-console
-
-Module Description:
-This module contains only one Class
-
-Module Classes:
-- HBNBCommand
-
-Module Attributes:
-- None
+Class console:
+ 
 """
 import cmd
 from models.base_model import BaseModel
@@ -28,7 +19,7 @@ import inspect
 class_names_str = [
     "BaseModel", "User", "Place", "State",
     "City", "Amenity", "Review"
-    ]
+]
 all_data = storage.all()
 
 
@@ -271,7 +262,7 @@ class HBNBCommand(cmd.Cmd):
         options = [
             'quit', 'help', 'all', 'show', 'destroy', 'update', 'BaseModel',
             'User', 'Place', 'State', 'City', 'Amenity', 'Review'
-            ]
+        ]
         if text:
             return [option for option in options if option.startswith(text)]
         else:
