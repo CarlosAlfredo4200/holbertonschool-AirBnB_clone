@@ -26,18 +26,13 @@ all_data = storage.all()
 class HBNBCommand(cmd.Cmd):
     """Command-line interface for the AIRBNB project."""
 
-    # intro = "Welcome to the AIRBNB console command"
     prompt = "(hbnb) "
 
     def do_quit(self, args: str) -> bool:
         """
         Quit command to exit the program.
 
-        Args:
-            args (str): The arguments passed with the command.
 
-        Returns:
-            bool: True to exit the program.
         """
         return True
 
@@ -45,11 +40,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Handle the end-of-file event (Ctrl+D).
 
-        Args:
-            args (str): The arguments passed with the command.
 
-        Returns:
-            bool: True to exit the program.
         """
         return True
 
@@ -57,12 +48,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Create a new instance of a given class.
 
-        Args:
-            args (str): The arguments passed with the command.
-                        It should contain the class name.
 
-        Returns:
-            None
         """
         arg_list = args.split()
         if not arg_list:
@@ -73,7 +59,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        # Process
         new_instance = eval(class_name)()
 
         new_instance.save()
@@ -83,12 +68,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Show the string representation of an instance.
 
-        Args:
-            args (str): The arguments passed with the command.
-                        It should contain the class name and the instance ID.
 
-        Returns:
-            None
         """
         arg_list = args.split()
         if not arg_list:
@@ -106,7 +86,6 @@ class HBNBCommand(cmd.Cmd):
 
         instance_id = arg_list[1]
 
-        # Process
         model = all_data.get(f"{class_name}.{instance_id}", None)
 
         if model is None:
@@ -119,24 +98,18 @@ class HBNBCommand(cmd.Cmd):
         """
         Show the string representation of all instances of a given class.
 
-        Args:
-            args (str): The arguments passed with the command.
-                        It may contain the class name.
 
-        Returns:
-            None
         """
         arg_list = args.split()
         if arg_list and arg_list[0] not in class_names_str:
             print("** class doesn't exist **")
             return
-        try:  # if only write all
+        try:
             class_name = arg_list[0]
         except Exception:
             pass
 
-        # Process
-        objects = [str(obj) for obj in all_data.values()  # if only write all
+        objects = [str(obj) for obj in all_data.values()
                    if args == "" or str(obj).startswith(f"[{class_name}]")]
 
         print(objects)
@@ -145,12 +118,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Delete an instance based on the class name and ID.
 
-        Args:
-            args (str): The arguments passed with the command.
-                        It should contain the class name and the instance ID.
 
-        Returns:
-            None
         """
         arg_list = args.split()
         if not arg_list:
@@ -168,7 +136,6 @@ class HBNBCommand(cmd.Cmd):
 
         instance_id = arg_list[1]
 
-        # Process
         try:
             all_data.pop(f"{class_name}.{instance_id}")
         except KeyError:
@@ -181,13 +148,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Update an instance based on the class name and ID.
 
-        Args:
-            args (str): The arguments passed with the command.
-                        It should contain the class name, instance ID,
-                        attribute name, and attribute value.
 
-        Returns:
-            None
         """
         arg_list = args.split()
         if not arg_list:
@@ -250,14 +211,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Provide auto-completion for some commands.
 
-        Args:
-            text (str): The current word being completed.
-            line (str): The whole command line being completed.
-            start_index (int): The start index of the current word.
-            end_index (int): The end index of the current word.
 
-        Returns:
-            str: A list of possible completions.
         """
         options = [
             'quit', 'help', 'all', 'show', 'destroy', 'update', 'BaseModel',
@@ -272,11 +226,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Handle unknown commands.
 
-        Args:
-            line (str): The unknown command.
 
-        Returns:
-            None
         """
         print_string = f"Command '{line}' not found, "
         print_string += f"please type help to display the commands availables"
@@ -292,11 +242,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Retrieve the number of instances of a class.
 
-        Args:
-            args (str): the class.
 
-        Returns:
-            None
         """
         arg_list = args.split()
         if not arg_list:
@@ -316,13 +262,9 @@ class HBNBCommand(cmd.Cmd):
         """
         Parse the line enter by the user.
 
-        Args:
-            arguments (str): the arguments enter by the user.
 
-        Returns:
-            The specific method, and the args passed
         """
-        # Parse the arguments
+
         try:
             method = arguments.split('(')[0].strip('.')
             raw_args = arguments.split('(')[1].strip(')')
@@ -351,18 +293,14 @@ class HBNBCommand(cmd.Cmd):
             print("Error: ", e)
             return
 
-        # Finding the function where was called
-        # gets information about the framework of the above function
         callerframerecord = inspect.stack()[1]
-        # gets the frame of the above function
+
         frame = callerframerecord[0]
-        # gets information about the framework of the above function
+
         info = inspect.getframeinfo(frame)
 
-        # assign the name of the above function
         name_function = info.function.strip("do_")
 
-        # Obtaining the internal args
         if args != "":
             internal_args = f"{name_function} {args}"
         else:
@@ -374,12 +312,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Execute the command specified
 
-        Args:
-            method (str): the method to be executed.
-            internal_args (str): the arguments of its method
 
-        Returns:
-            None
         """
         try:
             eval("self.do_{}".format(method))(internal_args)
@@ -390,13 +323,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Handle all methods of BaseModel that are enter in this way:
 
-        >>> BaseModel.method(args)
 
-        Args:
-            arguments (str): the arguments enter by the user.
-
-        Returns:
-            None
         """
         method, internal_args = self._parse_args(arguments)
         self._execute(method, internal_args)
@@ -405,40 +332,23 @@ class HBNBCommand(cmd.Cmd):
         """
         Handle all methods of User that are enter in this way:
 
-        >>> User.method(args)
 
-        Args:
-            arguments (str): the arguments enter by the user.
-
-        Returns:
-            None
         """
         method, internal_args = self._parse_args(arguments)
         self._execute(method, internal_args)
 
     def do_Place(self, arguments: str) -> None:
         """
-        Handle all methods of Place that are enter in this way:
+        arguments (str): the arguments enter by the user.
 
-        >>> Place.method(args)
 
-        Args:
-            arguments (str): the arguments enter by the user.
-
-        Returns:
-            None
         """
         method, internal_args = self._parse_args(arguments)
         self._execute(method, internal_args)
 
     def do_Amenity(self, arguments: str) -> None:
         """
-        Handle all methods of Amenity that are enter in this way:
-
-        >>> Amenity.method(args)
-
-        Args:
-            arguments (str): the arguments enter by the user.
+        arguments (str): the arguments enter by the user.
 
         Returns:
             None
@@ -450,13 +360,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Handle all methods of City that are enter in this way:
 
-        >>> City.method(args)
 
-        Args:
-            arguments (str): the arguments enter by the user.
-
-        Returns:
-            None
         """
         method, internal_args = self._parse_args(arguments)
         self._execute(method, internal_args)
@@ -465,13 +369,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Handle all methods of Review that are enter in this way:
 
-        >>> Review.method(args)
 
-        Args:
-            arguments (str): the arguments enter by the user.
-
-        Returns:
-            None
         """
         method, internal_args = self._parse_args(arguments)
         self._execute(method, internal_args)
@@ -480,13 +378,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Handle all methods of State that are enter in this way:
 
-        >>> State.method(args)
 
-        Args:
-            arguments (str): the arguments enter by the user.
-
-        Returns:
-            None
         """
         method, internal_args = self._parse_args(arguments)
         self._execute(method, internal_args)
