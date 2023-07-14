@@ -1,19 +1,11 @@
 #!/usr/bin/python3
 """
-class console Name:
+class console:
 
 """
 import cmd
-from models.base_model import BaseModel
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
-from models import storage
+
 from typing import Tuple, Optional
-import inspect
 
 
 class HBNBCommand(cmd.Cmd):
@@ -50,50 +42,45 @@ class HBNBCommand(cmd.Cmd):
         """
         return True
 
-    def do_create(self, args: str) -> None:
+    def do_create(self, args: str):
         """
         Create a new instance of a given class.
 
         Args:
             args (str): Arguments passed to the command.
         """
-        # Code implementation omitted for brevity
 
-    def do_show(self, args: str) -> None:
+    def do_show(self, args: str):
         """
         Print the string representation of an instance.
 
         Args:
             args (str): Arguments passed to the command.
         """
-        # Code implementation omitted for brevity
 
-    def do_all(self, args: Optional[str]) -> None:
+    def do_all(self, args: Optional[str]):
         """
         Print all string representations of instances.
 
         Args:
             args (Optional[str]): Arguments passed to the command.
         """
-        # Code implementation omitted for brevity
 
-    def do_destroy(self, args: str) -> None:
+    def do_destroy(self, args: str):
         """
         Delete an instance based on the class name and id.
 
         Args:
             args (str): Arguments passed to the command.
         """
-        # Code implementation omitted for brevity
 
-    def do_update(self, args: str) -> None:
+    def do_update(self, args: str):
         """
         Update an instance based on the class name and id.
 
         Args:
             args (str): Arguments passed to the command.
         """
-        # Code implementation omitted for brevity
 
     def complete_add(self, text: str) -> str:
         """
@@ -105,31 +92,28 @@ class HBNBCommand(cmd.Cmd):
         Returns:
             str: Autocompleted options.
         """
-        # Code implementation omitted for brevity
 
-    def default(self, line: str) -> None:
+    def default(self, line: str):
         """
         Default behavior for unknown commands.
 
         Args:
             line (str): Command line entered by the user.
         """
-        
 
-    def emptyline(self) -> None:
+    def emptyline(self):
         """
         Do nothing when an empty line is entered.
         """
         pass
 
-    def do_count(self, args: str) -> None:
+    def do_count(self, args: str):
         """
         Count the number of instances of a class.
 
         Args:
             args (str): Arguments passed to the command.
         """
-       
 
     def _parse_args(self, arguments: str) -> Tuple[str, str]:
         """
@@ -141,9 +125,8 @@ class HBNBCommand(cmd.Cmd):
         Returns:
             Tuple[str, str]: Method and internal arguments.
         """
-        
 
-    def _execute(self, method: str, internal_args: str) -> None:
+    def _execute(self, method: str, internal_args: str):
         """
         Execute the command based on the method and internal arguments.
 
@@ -151,71 +134,62 @@ class HBNBCommand(cmd.Cmd):
             method (str): Method to be executed.
             internal_args (str): Internal arguments for the method.
         """
-      
-      
 
-    def do_BaseModel(self, arguments: str) -> None:
+    def do_BaseModel(self, arguments: str):
         """
         Execute a command for the BaseModel class.
 
         Args:
             arguments (str): Arguments passed to the command.
         """
-        
 
-    def do_User(self, arguments: str) -> None:
+    def do_User(self, arguments: str):
         """
         Execute a command for the User class.
 
         Args:
             arguments (str): Arguments passed to the command.
         """
-   
 
-    def do_Place(self, arguments: str) -> None:
+    def do_Place(self, arguments: str):
         """
         Execute a command for the Place class.
 
         Args:
             arguments (str): Arguments passed to the command.
         """
-      
 
-    def do_Amenity(self, arguments: str) -> None:
+    def do_Amenity(self, arguments: str):
         """
         Execute a command for the Amenity class.
 
         Args:
             arguments (str): Arguments passed to the command.
         """
-       
 
-    def do_City(self, arguments: str) -> None:
+    def do_City(self, arguments: str):
         """
         Execute a command for the City class.
 
         Args:
             arguments (str): Arguments passed to the command.
         """
-       
 
-    def do_Review(self, arguments: str) -> None:
+    def do_Review(self, arguments: str):
         """
         Execute a command for the Review class.
 
         Args:
             arguments (str): Arguments passed to the command.
         """
-       
 
-    def do_State(self, arguments: str) -> None:
+    def do_State(self, arguments: str):
         """
         Execute a command for the State class.
 
         Args:
             arguments (str): Arguments passed to the command.
         """
-       
 
 
 if __name__ == '__main__':
