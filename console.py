@@ -114,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             line (str): Command line entered by the user.
         """
-        # Code implementation omitted for brevity
+        
 
     def emptyline(self) -> None:
         """
