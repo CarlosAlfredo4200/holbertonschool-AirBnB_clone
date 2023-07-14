@@ -1,63 +1,84 @@
 #!/usr/bin/python3
-"""a class BaseModel"""
+"""
+Module Name:
+base_model
+
+Module Description:
+This module contains only one Class
+
+Module Classes:
+- BaseModel
+
+Module Attributes:
+- None
+"""
 import uuid
 from datetime import datetime
 
 
 class BaseModel:
-    def __init__(self, *args, **kwargs):
-        """
-        Constructor for BaseModel.
+    """
+    The BaseModel class is a Python class that can be used as a base class
+    for other classes that require common functionality such as creating a
+    unique ID, saving to a database, and converting to a dictionary.
+    """
 
+    def __init__(self, *args, **kwargs) -> None:
+        from models import storage
         """
+        This method is called when an instance of the class is created.
+        It initializes the instance's attributes id, created_at, and updated_at
+
+        Attributes:
+        ----------------
+        id: is a unique identifier generated using the uuid.uuid4() method.
+        created_at and updated_at: are set to the current date and time
+                                   using the datetime.now() method.
+        """
+
         if kwargs:
             for key, value in kwargs.items():
-                if key != '__class__':
-                    if key == 'created_at' or key == 'updated_at':
-                        value = datetime.strptime(
-                            value, "%Y-%m-%dT%H:%M:%S.%f")
+                if key in ['created_at', 'updated_at']:
+                    setattr(self, key, datetime.fromisoformat(value))
+                elif key != '__class__':
+                    # Everything will be added as an attribute except the class
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.today()
-            self.updated_at = datetime.today()
-            from models import storage
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
             storage.new(self)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
-        Return a string representation of the BaseModel object.
+        This method returns a string representation of the instance.
+        The string includes the instance's class name, id, and attributes.
+        """
+        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
-        Returns:
-            str: A string representation in the format:
-                 "[<class name>] (<id>) <attribute dictionary>"
-        """
-        return f"[{type(self).__name__}] ({self.id}) {self.__dict__}"
-
-    def save(self):
-        """
-        Update the 'updated_at' attribute with the current datetime.
-
-        """
-        self.updated_at = datetime.today()
+    def save(self) -> None:
         from models import storage
+        """
+        This method updates the updated_at attribute to the current date
+        and time using the datetime.now() method. It can be used to indicate
+        that an instance has been modified and needs to be saved.
+        """
+        self.updated_at = datetime.now()
         storage.save()
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         """
-        Return a dictionary representation of the BaseModel object.
-
-        Returns:
-            dict: A dictionary containing all keys/values
-            of the instance's __dict__,
-            including '__class__', 'created_at', and 'updated_at'.
-            The 'created_at'
-            and 'updated_at' values are converted
-            to string objects in ISO format.
-
+        This method returns a dictionary representation of the instance.
+        The dictionary includes all of the instance's attributes,
+        as well as the class name, created_at, and updated_at attributes.
+        The created_at and updated_at attributes are formatted as ISO 8601
+        strings using the datetime.isoformat() method.
         """
-        obj_dict = self.__dict__.copy()
-        obj_dict['__class__'] = type(self).__name__
-        obj_dict['created_at'] = self.created_at.isoformat()
-        obj_dict['updated_at'] = self.updated_at.isoformat()
-        return obj_dict
+        data = {}
+        for key, value in self.__dict__.items():
+            if key in ['created_at', 'updated_at']:
+                data[key] = value.isoformat()
+            else:
+                data[key] = value
+        data['__class__'] = self.__class__.__name__
+        return data
