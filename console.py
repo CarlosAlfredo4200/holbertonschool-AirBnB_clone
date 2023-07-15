@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
 Class console:
- 
+
 """
 import cmd
 from models.base_model import BaseModel
@@ -17,21 +17,25 @@ import inspect
 
 
 class_names_str = [
-    "BaseModel", "User", "Place", "State",
-    "City", "Amenity", "Review"
+    "BaseModel",
+    "User",
+    "Place",
+    "State",
+    "City",
+    "Amenity",
+    "Review"
 ]
 all_data = storage.all()
 
 
 class HBNBCommand(cmd.Cmd):
-    """Command-line interface for the AIRBNB project."""
+    """class Command-line AIRBNB"""
 
     prompt = "(hbnb) "
 
     def do_quit(self, args: str) -> bool:
         """
         Quit command to exit the program.
-
 
         """
         return True
@@ -47,7 +51,6 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args: str) -> None:
         """
         Create a new instance of a given class.
-
 
         """
         arg_list = args.split()
